@@ -1,0 +1,41 @@
+import { randomNouns } from "./utilities/prompt.js";
+
+const canvas = document.querySelector('#draw');
+//  we dont draw on canvas but on its context this
+// gets us that
+const context = canvas.getContext('2d');
+
+// here we set the canvas to take up the whole screen
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+context.strokeStyle = '#BADASS';
+context.lineJoin = 'round';
+context.lineCap = 'round'
+
+let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
+
+function draw(e){
+    // fun trick ends function early if no mouse down
+    if(isDrawing == false){return}
+    //draws line from lastXY to offset
+context.beginPath();
+context.moveTo(lastX,lastY);
+context.lineTo(e.offsetX, e.offsetY);
+context.stroke();
+//updates where line started
+lastX = e.offsetX;
+lastY =e.offsetY;
+}
+//follows mouse movement on canvas and runs draw
+canvas.addEventListener('mousemove', (draw));
+// make it so we only draw while clicking and we
+//kno to start drawing from where mouse is clicked
+canvas.addEventListener('mousedown', (e) =>{ isDrawing =true;
+    lastX = e.offsetX;
+    lastY =e.offsetY;
+});
+canvas.addEventListener('mouseup', () => isDrawing =false);
+// if mouse leaves window releases
+canvas.addEventListener('mouseout', () => isDrawing =false);
